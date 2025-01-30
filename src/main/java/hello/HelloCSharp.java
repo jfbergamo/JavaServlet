@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(description = "meglio php", urlPatterns = { "/HelloCSharp" })
 public class HelloCSharp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private int visitors;
 	
     public HelloCSharp() {
@@ -23,16 +23,26 @@ public class HelloCSharp extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String linguaggio = request.getParameter("lang");
+		boolean reset = Boolean.parseBoolean(request.getParameter("reset"));
+		if (linguaggio == null) linguaggio = "C#";
+		
+		if (reset) {
+			visitors = 0;
+			response.sendRedirect("?reset=false");
+			return;
+		}
 		visitors++;
-		response.getWriter().println("<h1>Odio C#</h1>");
-		response.getWriter().println("Ciao, Java!");
+		
+		response.getWriter().println("<h1>Odio " + linguaggio + "</h1>");
+		response.getWriter().println("Ciao, da Java!");
 		response.getWriter().println(visitors + " persone hanno visitato questa pagina!");
 		response.getWriter().println("<hr>");
+		response.getWriter().println("<a href=\"?reset=true\"><button>Reset</button></a>");
 		response.getWriter().println("<h4>KESBALLO</h4>");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
