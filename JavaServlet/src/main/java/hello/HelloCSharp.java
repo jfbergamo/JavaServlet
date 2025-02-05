@@ -1,6 +1,8 @@
 package hello;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,12 +36,17 @@ public class HelloCSharp extends HttpServlet {
 		}
 		visitors++;
 		
-		response.getWriter().println("<h1>Odio " + linguaggio + "</h1>");
-		response.getWriter().println("Ciao, da Java!");
-		response.getWriter().println(visitors + " persone hanno visitato questa pagina!");
-		response.getWriter().println("<hr>");
-		response.getWriter().println("<a href=\"?reset=true\"><button>Reset</button></a>");
-		response.getWriter().println("<h4>KESBALLO</h4>");
+//		response.getWriter().println("<h1>Odio " + linguaggio + "</h1>");
+//		response.getWriter().println("Ciao, da Java!");
+//		response.getWriter().println(visitors + " persone hanno visitato questa pagina!");
+//		response.getWriter().println("<hr>");
+//		response.getWriter().println("<a href=\"?reset=true\"><button>Reset</button></a>");
+//		response.getWriter().println("<h4>KESBALLO</h4>");
+		
+		request.setAttribute("visitors", visitors);
+		request.setAttribute("linguaggio", linguaggio);
+		RequestDispatcher disp = request.getRequestDispatcher("/WEB-INF/VisitorViewer.jsp");
+		disp.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
