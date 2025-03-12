@@ -25,16 +25,23 @@ public class Login extends HttpServlet {
 		String user = request.getParameter("user");
 		String password = request.getParameter("password");
 		
-		boolean logged = (adminUsr.equals(user) && adminPswd.equals(password)) || Boolean.parseBoolean((String)session.getAttribute("logged"));
-		
-		session.setAttribute("logged", Boolean.toString(logged));
+		boolean logout = request.getParameter("logout") != null;
+		boolean logged = (
+							(adminUsr.equals(user) && adminPswd.equals(password)) 
+							|| (Boolean)session.getAttribute("logged")
+						 ) && !logout;
+
+		session.setAttribute("logged", logged);
 		
 		if (logged) {
 			request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
 			return;
 		}
 		
-		request.setAttribute("failed", logged);
+		if (request.getMethod().equals("POST") && !logout) {
+			request.setAttribute("failed", !logged);
+		}
+		
 		request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
 	}
 
