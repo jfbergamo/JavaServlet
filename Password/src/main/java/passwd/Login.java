@@ -1,6 +1,10 @@
 package passwd;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +19,13 @@ public class Login extends HttpServlet {
 	private final String adminUsr  = "admin@kesballo.org";
 	private final String adminPswd = "Pippo1234";
 	
+	private DbHelper db;
+	
     public Login() {
         super();
+        db = new DbHelper();
     }
-
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
@@ -26,10 +33,18 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		boolean logout = request.getParameter("logout") != null;
-		boolean logged = (
-							(adminUsr.equals(user) && adminPswd.equals(password)) 
-							|| (Boolean)session.getAttribute("logged")
-						 ) && !logout;
+		boolean logged;
+		try {
+			db.connect();
+			logged = (
+						db.logon(user, password)
+						|| (session.getAttribute("logged") != null && (Boolean)session.getAttribute("logged"))
+					 ) && !logout;
+		} catch (SQLException ex) {
+			request.setAttribute("error", ex.toString());
+			request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);
+			return;
+		}
 
 		session.setAttribute("logged", logged);
 		
