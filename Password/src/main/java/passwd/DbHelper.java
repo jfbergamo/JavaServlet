@@ -1,6 +1,10 @@
 package passwd;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 public class DbHelper {    
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";  
@@ -31,9 +35,14 @@ public class DbHelper {
     
     /* DB API */    
     public boolean logon(String email, String pwd) throws SQLException {
-    	String query = "SELECT * FROM account WHERE email='" + email + "' AND pwd=md5('" + pwd + "')";
-    	Statement sql = con.createStatement();
-    	ResultSet res = sql.executeQuery(query);
-		return res.next();
-		}
+    	String query = "SELECT * FROM account WHERE email='?' AND pwd=md5('?')";
+    	
+    	PreparedStatement sql = con.prepareStatement(query);
+    	sql.setString(1, email);
+    	sql.setString(2, pwd);
+    	
+    	ResultSet res = sql.executeQuery();
+		
+    	return res.next();
+	}
 }
