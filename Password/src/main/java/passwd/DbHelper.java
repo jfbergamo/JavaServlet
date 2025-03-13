@@ -1,16 +1,17 @@
 package passwd;
 
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 
 public class DbHelper {    
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";  
     private static final String DBurl = "jdbc:mysql://localhost:3306/userlogin";
     private static final String user = "login";
     private static final String pwd = "pippo";    
+
     private Connection con;
     
     public DbHelper() {
@@ -35,13 +36,9 @@ public class DbHelper {
     
     /* DB API */    
     public boolean logon(String email, String pwd) throws SQLException {
-    	String query = "SELECT * FROM account WHERE email='?' AND pwd=md5('?')";
-    	
-    	PreparedStatement sql = con.prepareStatement(query);
-    	sql.setString(1, email);
-    	sql.setString(2, pwd);
-    	
-    	ResultSet res = sql.executeQuery();
+    	String query = "SELECT * FROM account WHERE email = '" + email + "' AND pwd = md5('" + pwd + "')";
+    	Statement sql = con.createStatement();
+    	ResultSet res = sql.executeQuery(query);
 		
     	return res.next();
 	}

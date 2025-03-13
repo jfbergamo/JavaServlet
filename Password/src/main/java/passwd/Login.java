@@ -1,8 +1,6 @@
 package passwd;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -15,9 +13,6 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	private final String adminUsr  = "admin@kesballo.org";
-	private final String adminPswd = "Pippo1234";
 	
 	private DbHelper db;
 	
@@ -27,11 +22,12 @@ public class Login extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session and form data
 		HttpSession session = request.getSession();
-		
 		String user = request.getParameter("user");
 		String password = request.getParameter("password");
 		
+		// Check if user is logged
 		boolean logout = request.getParameter("logout") != null;
 		boolean logged;
 		try {
@@ -40,13 +36,16 @@ public class Login extends HttpServlet {
 						db.logon(user, password)
 						|| (session.getAttribute("logged") != null && (Boolean)session.getAttribute("logged"))
 					 ) && !logout;
+			db.disconnect();
 		} catch (SQLException ex) {
 			request.setAttribute("error", ex.toString());
 			request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);
 			return;
 		}
-
+		
 		session.setAttribute("logged", logged);
+		
+		// Redirects
 		
 		if (logged) {
 			request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
