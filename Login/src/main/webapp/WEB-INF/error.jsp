@@ -12,7 +12,9 @@
         <div class="row align-items-start">
             <div class="col-md-4 offset-md-4">
             	<div class="alert alert-danger text-center md-4 mt-4">
-					<h4>Hai rotto tutto boi!</h4>
+					<h4>
+						${code}
+					</h4>
 					${error}
             	</div>
             </div>

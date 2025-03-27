@@ -10,35 +10,42 @@
 <body>
 	
 	<div class="container text-center">
-        <div class="row align-items-start">
-            <div class="col-md-4 offset-md-4">
-                <h3 class="text-center mt-5">Cambia password</h3>
-                <form method="post">
-                    <div class="mb-3">
-                        <label for="current" class="form-label">Password attuale</label> 
-						<input name="email" type="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nuova password</label>
-                        <input name="newpw" type="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Conferma nuova password</label>
-                        <input name="confirm" type="password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
+		<h1 class="mt-3">Home</h1>
+		
+		<table>
+			<tr>
+				<th>Utente<th/>
+			<tr/>
+			
+		</table>
+		
 		<div class="md-4 mt-4">
-	    	<form method="post">
-				<input type="hidden" name="logout" value="yes">
-	            <button class="btn btn-danger">
-	            	Logout
-	            </button>
-			</form>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logout">
+            	Logout
+            </button>
 		</div>
     </div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="logout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+	        	<h1 class="modal-title fs-5">Conferma</h1>
+	        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      	</div>
+	      	<div class="modal-body">
+				Sei sicuro di voler uscire?
+	      	</div>
+	      	<div class="modal-footer">
+	        	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+	        	<a href="/Login/app/logout">
+		        	<button type="button" class="btn btn-primary">Si</button>
+	        	</a>
+	      	</div>
+	    </div>
+	</div>
+	</div>
 	
 	<script type="text/javascript" src="/Login/bootstrap/js/bootstrap.min.js"></script>
 </body>
