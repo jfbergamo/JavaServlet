@@ -85,7 +85,7 @@ public class Login extends HttpServlet {
 		req.setAttribute("error", msg);
 		req.getRequestDispatcher("/WEB-INF/error.jsp").forward(req, res);
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
